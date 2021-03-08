@@ -17,6 +17,7 @@
 #include <WString.h>
 #include "include/DuckTypes.h"
 #include "include/DuckEsp.h"
+#include <vector>
 #ifndef CDPCFG_OLED_NONE
 #include <U8g2lib.h>
 #endif
