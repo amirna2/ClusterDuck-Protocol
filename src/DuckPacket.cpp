@@ -29,6 +29,8 @@ bool DuckPacket::prepareForRelaying(bloom_filter* filter, std::vector<byte> data
   buffer.assign(dataBuffer.begin(), dataBuffer.end());
   int hops = buffer[HOP_COUNT_POS]++;
   loginfo("prepareForRelaying: hops count: "+ String(hops));
+
+  return true;
 }
 
 
