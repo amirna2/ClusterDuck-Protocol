@@ -4,6 +4,8 @@
 #include "../CdpPacket.h"
 #include "Arduino.h"
 #include "DuckUtils.h"
+#include "bloom_filter.hpp"
+
 #include "cdpcfg.h"
 #include <CRC32.h>
 #include <WString.h>
@@ -51,15 +53,13 @@ public:
     int prepareForSending(const std::vector<byte> targetDevice, byte duckType, byte topic, std::vector<byte> app_data);
 
     /**
-     * @brief Update a received packet if it needs to be relayed in the mesh.
-     * 
-     * @param duid unique Id of the device relaying the packet
+     * @brief Update a received packet before it is relayed in the mesh.
+     * @param filter the bloom_filter to store the packet ID in
      * @param dataBuffer buffer containing the packet data
-     * @returns true if the packet needs to be relayed
-     * @returns false if the packet does not need to be replayed
+     * @returns true if the packet can be relayed or false otherwise.
      */
-    bool prepareForRelaying(std::vector<byte> duid, std::vector<byte> dataBuffer);
-    
+    bool prepareForRelaying(bloom_filter* filter, std::vector<byte> dataBuffer);
+
     /**
      * @brief Get the Cdp Packet byte vector.
      * 

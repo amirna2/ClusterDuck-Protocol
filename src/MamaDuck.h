@@ -6,6 +6,7 @@
 
 #include "include/Duck.h"
 #include "include/cdpcfg.h"
+#include "include/bloom_filter.hpp"
 
 class MamaDuck : public Duck {
 public:
@@ -35,7 +36,7 @@ public:
    * 
    * @returns DUCK_ERR_NONE if setup is successfull, an error code otherwise.
    */
-   int setupWithDefaults(std::vector<byte> deviceId, String ssid = "",
+  int setupWithDefaults(std::vector<byte> deviceId, String ssid = "",
                             String password = "");
 
   /**

@@ -69,30 +69,30 @@ void PapaDuck::run() {
 
 void PapaDuck::handleReceivedPacket() {
 
-  loginfo("handleReceivedPacket() START");
+  loginfo("handleReceivedPacket: START");
   std::vector<byte> data;
   int err = duckRadio->readReceivedData(&data);
 
   if (err != DUCK_ERR_NONE) {
-    logerr("ERROR handleReceivedPacket. Failed to get data. rc = " +
-           String(err));
+    logerr("handleReceivedPacket: Failed to get data. rc = " + String(err));
     return;
   }
-  // ignore pings
+  // Papa ducks don't respond to pings
   if (data[TOPIC_POS] == reservedTopic::ping) {
     rxPacket->reset();
     return;
   }
-  // build our RX DuckPacket which holds the updated path in case the packet is relayed
-  bool relay = rxPacket->prepareForRelaying(duid, data);
-  if (relay) {
-    logdbg("relaying:  " +
-            duckutils::convertToHex(rxPacket->getBuffer().data(),
-                                    rxPacket->getBuffer().size()));
-    loginfo("invoking callback in the duck application...");
-    recvDataCallback(rxPacket->getBuffer());
-    loginfo("handleReceivedPacket() DONE");
+  
+  bool relaying = rxPacket->prepareForRelaying(filter, data);
+  if (!relaying) {
+    return;
   }
+  
+  logdbg("relaying:  " + duckutils::convertToHex(rxPacket->getBuffer().data(), rxPacket->getBuffer().size()));
+  loginfo("handleReceivedPacket: callback in the duck application...");
+  recvDataCallback(rxPacket->getBuffer());
+  loginfo("handleReceivedPacket: DONE");
+  
 }
 
 int PapaDuck::reconnectWifi(String ssid, String password) {

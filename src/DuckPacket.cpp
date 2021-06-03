@@ -4,65 +4,33 @@
 #include "MemoryFree.h"
 #include "include/DuckUtils.h"
 #include "include/DuckCrypto.h"
+#include "include/bloom_filter.hpp"
 #include <string>
 
 #define ENCRYPTION
 
 
-bool DuckPacket::prepareForRelaying(std::vector<byte> duid, std::vector<byte> dataBuffer) {
-
-  bool relaying;
-
-
-  int packet_length = dataBuffer.size();
-  int path_pos = dataBuffer.data()[PATH_OFFSET_POS];
-
-  std::vector<byte> path_section;
-
-  // extract path section from the packet buffer
-  path_section.assign(&dataBuffer[path_pos], &dataBuffer[packet_length]);
+bool DuckPacket::prepareForRelaying(bloom_filter* filter, std::vector<byte> dataBuffer) {
 
   this->reset();
 
   loginfo("prepareForRelaying: START");
 
-  // update the rx packet byte buffer
+  bool alreadySeen = filter->contains(&dataBuffer[MUID_POS], MUID_LENGTH);
+  if (alreadySeen) {
+    logdbg("handleReceivedPacket: Packet already seen. No relay.");
+    return false;
+  } else {
+    filter->insert(&dataBuffer[MUID_POS], MUID_LENGTH);
+    logdbg("handleReceivedPacket: Relaying packet: "  + duckutils::convertToHex(&dataBuffer[MUID_POS], MUID_LENGTH));
+  }
+
+  // update the rx packet internal byte buffer
   buffer.assign(dataBuffer.begin(), dataBuffer.end());
-
-  loginfo("prepareForRelaying: Packet is built. Checking for relay...");
-
-  // when a packet is relayed the given duid is added to the path section of the
-  // packet
-  relaying = relay(duid, path_section);
-  if (!relaying) {
-    this->reset();
-  }
-  loginfo("prepareForRelaying: DONE. Relay = " + String(relaying));
-  return relaying;
+  int hops = buffer[HOP_COUNT_POS]++;
+  loginfo("prepareForRelaying: hops count: "+ String(hops));
 }
 
-bool DuckPacket::relay(std::vector<byte> duid, std::vector<byte> path_section) {
-
-  int path_length = path_section.size();
-
-  if (path_length == MAX_PATH_LENGTH) {
-    logerr("ERROR Max hops reached. Cannot relay packet.");
-    return false;
-  }
-
-  // we don't have a contains() method but we can use indexOf()
-  // if the result is > 0 then the substring was found
-  // starting at the returned index value.
-  String id = duckutils::convertToHex(duid.data(), duid.size());
-  String path_string = duckutils::convertToHex(path_section.data(), path_length);
-  if (path_string.indexOf(id) >= 0) {
-    loginfo("Packet already seen. ignore it.");
-    return false;
-  }
-  buffer.insert(buffer.end(), duid.begin(), duid.end());
-  buffer[HOP_COUNT_POS]++;
-  return true;
-}
 
 int DuckPacket::prepareForSending(std::vector<byte> targetDevice, byte duckType, byte topic, std::vector<byte> app_data) {
 
@@ -150,4 +118,3 @@ int DuckPacket::prepareForSending(std::vector<byte> targetDevice, byte duckType,
          duckutils::convertToHex(buffer.data(), buffer.size()));
   return DUCK_ERR_NONE;
 }
-

@@ -6,7 +6,7 @@ void restartDuck() { ESP.restart(); }
 int freeHeapMemory() {ESP.getFreeHeap();}
 #else 
 void restartDuck() {}
-int freeHeapMemory() {}
+int freeHeapMemory() { return 0; }
 #endif
 
 #ifdef ESP32
