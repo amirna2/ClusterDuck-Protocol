@@ -255,6 +255,8 @@ public:
   void decrypt(uint8_t* encryptedData, uint8_t* text, size_t inc);
 
 protected:
+  friend bool DuckPacket::prepareForRelaying(std::vector<byte> duid, std::vector<byte> dataBuffer);
+
   String duckName="";
 
   String deviceId;
@@ -263,6 +265,8 @@ protected:
   DuckNet* duckNet = DuckNet::getInstance();
   DuckPacket* txPacket = NULL;
   DuckPacket* rxPacket = NULL;
+
+  DuckCrypto duckCrypto;
 
   /**
    * @brief sends a pong message

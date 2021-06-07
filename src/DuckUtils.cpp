@@ -35,8 +35,14 @@ void  getRandomBytes(int length, byte* bytes) {
   for (i = 0; i < length; i++) {
     //TODO: Random generator here isn't seeded properly
     //We can use RSSI value to seed it or use a frame counter if available
-    bytes[i] = digits[random(0, 35)];
+#ifdef CDPCFG_HELTEC_CUBE_CELL   
+    int pos = random(strlen(digits) - 1);
+#else
+    int pos = random(0, strlen(digits) - 1);
+#endif    
+    bytes[i] = digits[pos];
   }
+  
 }
 
 String createUuid(int length) {
@@ -44,7 +50,11 @@ String createUuid(int length) {
   int i;
 
   for (i = 0; i < length; i++) {
-    byte randomValue = random(0, 36);
+#ifdef CDPCFG_HELTEC_CUBE_CELL   
+    byte randomValue = random (36);
+#else
+  byte randomValue = random(0, 36);
+#endif
     if (randomValue < 26) {
       msg = msg + char(randomValue + 'a');
     } else {

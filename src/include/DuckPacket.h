@@ -5,6 +5,7 @@
 #include "Arduino.h"
 #include "DuckUtils.h"
 #include "cdpcfg.h"
+#include "DuckCrypto.h"
 #include <CRC32.h>
 #include <WString.h>
 #include <vector>
@@ -89,7 +90,8 @@ public:
     byte getTopic() { return buffer[TOPIC_POS]; }
 
 
-  private: 
+  private:
+    DuckCrypto duckCrypto; 
     std::vector<byte> duid;
     std::vector<byte> buffer;
 };
