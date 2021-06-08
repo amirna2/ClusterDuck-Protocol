@@ -37,8 +37,9 @@ int DuckRadio::setupRadio(LoraConfigParams config) {
 #endif
 
   // TODO: Display should be setup outside the radio setup
+#ifdef DISPLAY_AVAILABLE 
   // display->setupDisplay(DuckType::MAMA, "mama");
-
+#endif
   int rc = lora.begin();
 
   if (rc != ERR_NONE) {

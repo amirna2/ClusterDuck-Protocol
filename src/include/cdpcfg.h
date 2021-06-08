@@ -423,6 +423,11 @@
 #endif
 #endif
 
+
+#ifndef CDPCFG_OLED_NONE
+#define DISPLAY_AVAILABLE
+#endif
+
 #endif // CDPCFG
 
 // append optional post-cfg

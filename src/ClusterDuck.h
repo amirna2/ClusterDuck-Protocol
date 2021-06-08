@@ -18,8 +18,9 @@
 #include "WProgram.h"
 #endif
 #include <WString.h>
-
+#ifdef DISPLAY_AVAILABLE
 #include "DuckDisplay.h"
+#endif
 #include "include/DuckLed.h"
 #include "include/DuckRadio.h"
 #include "include/DuckNet.h"

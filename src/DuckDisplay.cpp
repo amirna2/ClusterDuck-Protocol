@@ -1,8 +1,11 @@
+#include "include/cdpcfg.h"
+
+#ifdef CDPCFG_OLED_CLASS
+
 #include "DuckDisplay.h"
 #include <iostream>
 #include <vector>
 
-#ifdef CDPCFG_OLED_CLASS
 
 #define CDPCFG_PIN_OLED_ROTATION U8G2_R0
 
@@ -100,7 +103,6 @@ static const unsigned char u8g_logo_bits[] U8X8_PROGMEM = {
     0x00, 0x00, 0x00, 0x00,
 };
 
-#endif
 
 #define u8g_logo_width 128
 #define u8g_logo_height 64
@@ -115,7 +117,6 @@ DuckDisplay* DuckDisplay::getInstance() {
   }
   return instance;
 }
-#ifndef CDPCFG_OLED_NONE
 
 void DuckDisplay::setupDisplay(int duckType, std::vector<byte> name) {
   u8g2.begin();        // clear the internal memory
@@ -191,8 +192,6 @@ String DuckDisplay::duckTypeToString(int duckType) {
 }
 
 
-
-
 void DuckDisplay::showDefaultScreen() {
 #ifdef CDPCFG_OLED_64x32
   // small display 64x32
@@ -220,4 +219,5 @@ void DuckDisplay::showDefaultScreen() {
   u8g2.sendBuffer(); 
 #endif
 }
-#endif // CDPCFG_OLED_NONE
+#endif
+

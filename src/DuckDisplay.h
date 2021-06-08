@@ -19,7 +19,7 @@
 #include "include/DuckTypes.h"
 #include "include/DuckEsp.h"
 #include "include/DuckUtils.h"
-#ifndef CDPCFG_OLED_NONE
+#ifdef DISPLAY_AVAILABLE
 #include <U8g2lib.h>
 #endif
 /**

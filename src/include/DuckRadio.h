@@ -11,7 +11,9 @@
 #ifndef DUCKLORA_H_
 #define DUCKLORA_H_
 
+#ifdef DISPLAY_AVAILABLE
 #include "../DuckDisplay.h"
+#endif
 #include "../DuckError.h"
 #include "../DuckLogger.h"
 #include <Arduino.h>
@@ -169,7 +171,11 @@ private:
   DuckRadio(DuckRadio const&) = delete;
   DuckRadio& operator=(DuckRadio const&) = delete;
   static DuckRadio* instance;
+
+#ifdef DISPLAY_AVAILABLE
   DuckDisplay* display = DuckDisplay::getInstance();
+#endif  
+
   int err;
 };
 
