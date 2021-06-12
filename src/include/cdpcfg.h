@@ -424,7 +424,7 @@
 #endif
 
 
-#ifndef CDPCFG_OLED_NONE
+#if !defined (CDPCFG_OLED_NONE)
 #define DISPLAY_AVAILABLE
 #endif
 

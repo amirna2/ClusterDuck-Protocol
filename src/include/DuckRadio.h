@@ -11,6 +11,8 @@
 #ifndef DUCKLORA_H_
 #define DUCKLORA_H_
 
+#include "cdpcfg.h"
+
 #ifdef DISPLAY_AVAILABLE
 #include "../DuckDisplay.h"
 #endif
@@ -20,7 +22,7 @@
 
 #include "DuckPacket.h"
 #include "LoraPacket.h"
-#include "cdpcfg.h"
+
 
 /**
  * @brief Internal structure to hold the LoRa module configuration
