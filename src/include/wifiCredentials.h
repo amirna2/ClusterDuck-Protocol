@@ -1,5 +1,5 @@
-#ifndef WIFIPAGE_H
-#define WIFIPAGE_H
+#pragma once
+
 
 const char wifi_page[] PROGMEM = R"=====(
 
@@ -55,5 +55,3 @@ const char wifi_page[] PROGMEM = R"=====(
   </body></html>
   
 )=====";
-
-#endif

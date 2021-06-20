@@ -7,8 +7,7 @@
  * @copyright
  */
 
-#ifndef DUCKLED_H_
-#define DUCKLED_H_
+#pragma once
 
 #include "cdpcfg.h"
 #include <Arduino.h>
@@ -61,4 +60,3 @@ private:
   static DuckLed* instance;
 };
 
-#endif /* DUCKLED_H_ */

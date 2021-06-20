@@ -1,6 +1,4 @@
-#ifndef DUCKERROR_H
-#define DUCKERROR_H
-
+#pragma once
 
 /// No Error
 #define DUCK_ERR_NONE 0
@@ -47,5 +45,3 @@
 #define DUCK_INTERNET_ERR_SETUP      -6000
 #define DUCK_INTERNET_ERR_SSID       -6001
 #define DUCK_INTERNET_ERR_CONNECT    -6002
-
-#endif

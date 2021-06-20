@@ -1,5 +1,4 @@
-#ifndef DUCKTYPES_H
-#define DUCKTYPES_H
+#pragma once
 
 /**
  * @brief Type of ducks
@@ -18,5 +17,3 @@ enum DuckType {
   DETECTOR = 0x04,
   MAX_TYPE
 };
-
-#endif

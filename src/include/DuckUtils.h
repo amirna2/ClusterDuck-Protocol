@@ -7,8 +7,7 @@
  * @copyright
  */
 
-#ifndef DUCKUTILS_H_
-#define DUCKUTILS_H_
+#pragma once
 
 #include "cdpcfg.h"
 #include "arduino-timer.h"
@@ -77,4 +76,3 @@ bool getDetectState();
 bool flipDetectState();
 
 } // namespace duckutils
-#endif

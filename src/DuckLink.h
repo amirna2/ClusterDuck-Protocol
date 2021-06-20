@@ -1,5 +1,4 @@
-#ifndef DUCKLINK_H
-#define DUCKLINK_H
+#pragma once
 
 #include <Arduino.h>
 #include <WString.h>
@@ -44,4 +43,4 @@ public:
   int getType() { return DuckType::LINK; }
 };
 
-#endif
+

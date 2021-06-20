@@ -1,5 +1,5 @@
-#ifndef PAPADUCK_H
-#define PAPADUCK_H
+#pragma once
+
 
 #include <Arduino.h>
 #include <WString.h>
@@ -72,4 +72,3 @@ private:
   void handleReceivedPacket();
 };
 
-#endif

@@ -1,5 +1,4 @@
-#ifndef DUCKPACKET_H_
-#define DUCKPACKET_H_
+#pragma once
 
 #include "../CdpPacket.h"
 #include "Arduino.h"
@@ -96,5 +95,5 @@ public:
     std::vector<byte> buffer;
 };
 
-#endif
+#pragma once
 

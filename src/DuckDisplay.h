@@ -10,8 +10,8 @@
  *
  * @copyright
  */
-#ifndef DUCKDISPLAY_H_
-#define DUCKDISPLAY_H_
+#pragma once
+
 #include "include/cdpcfg.h"
 #include <Arduino.h>
 #include <vector>
@@ -117,4 +117,3 @@ private:
   uint8_t height;
 };
 
-#endif /* DUCKDISPLAY_H_ */

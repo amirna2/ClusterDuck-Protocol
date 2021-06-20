@@ -1,5 +1,4 @@
-#ifndef OTAPAGE_H
-#define OTAPAGE_H
+#pragma once
 
 const char update_page[] PROGMEM = R"=====(
 <!DOCTYPE HTML>
@@ -61,5 +60,3 @@ const char update_page[] PROGMEM = R"=====(
   </BODY>
 </HTML>
 )=====";
-
-#endif

@@ -1,5 +1,5 @@
-#ifndef DUCKDETECT_H
-#define DUCKDETECT_H
+#pragma once
+
 
 #include <Arduino.h>
 #include <WString.h>
@@ -66,4 +66,3 @@ private:
   rssiCallback rssiCb;
   void handleReceivedPacket();
 };
-#endif

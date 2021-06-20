@@ -1,5 +1,4 @@
-#ifndef DUCKLOGGER_H
-#define DUCKLOGGER_H
+#pragma once
 
 #define CDP_DEBUG
 
@@ -99,5 +98,4 @@
   {}
 #define logdbg_f(...)                                                          \
   {}
-#endif
 #endif

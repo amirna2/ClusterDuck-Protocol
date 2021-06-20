@@ -8,8 +8,7 @@
  * 
  */
 
-#ifndef DUCKESP_H_
-#define DUCKESP_H_
+#pragma once
 
 #include "cdpcfg.h"
 #include <Arduino.h>
@@ -38,4 +37,3 @@ void restartDuck();
  */
 String getDuckMacAddress(boolean format);
 } // namespace duckesp
-#endif

@@ -1,5 +1,5 @@
-#ifndef CDPPACKET_H_
-#define CDPPACKET_H_
+#pragma once
+
 
 #include "Arduino.h"
 #include "include/DuckUtils.h"
@@ -166,5 +166,3 @@ public:
     dcrc = 0;
   }
 };
-
-#endif

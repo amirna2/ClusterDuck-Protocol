@@ -9,8 +9,8 @@
  * @copyright
  * 
  */
-#ifndef CD
-#define CD
+#pragma once
+
 
 #if (ARDUINO >= 100)
 #include "Arduino.h"
@@ -241,4 +241,3 @@ private:
   static void setFlag(void);
 
 };
-#endif

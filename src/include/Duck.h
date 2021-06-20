@@ -1,5 +1,4 @@
-#ifndef DUCK_H
-#define DUCK_H
+#pragma once
 
 #include "../DuckError.h"
 #include "DuckNet.h"
@@ -354,4 +353,3 @@ protected:
   static bool reboot(void*);
 };
 
-#endif

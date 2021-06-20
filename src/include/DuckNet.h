@@ -11,8 +11,7 @@
  * @copyright
  */
 
-#ifndef DUCKNET_H_
-#define DUCKNET_H_
+#pragma once
 
 #include "cdpcfg.h"
 #include <WString.h>
@@ -214,5 +213,3 @@ private:
   String ssid = "";
   String password = "";
 };
-
-#endif

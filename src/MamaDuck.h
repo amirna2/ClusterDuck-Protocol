@@ -1,5 +1,5 @@
-#ifndef MAMADUCK_H
-#define MAMADUCK_H
+#pragma once
+
 
 #include <Arduino.h>
 #include <WString.h>
@@ -51,5 +51,3 @@ public:
 private :
   void handleReceivedPacket();
 };
-
-#endif

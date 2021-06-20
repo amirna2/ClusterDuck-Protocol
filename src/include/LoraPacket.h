@@ -1,5 +1,5 @@
-#ifndef LORAPACKET_H_
-#define LORAPACKET_H_
+#pragma once
+
 
 #include <Arduino.h>
 #include <WString.h>
@@ -20,5 +20,3 @@ typedef struct {
   /// Comma separated list of duck device ids that have seen this packet
   String path;        
 } Packet;
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef CONTROLPANEL_H
-#define CONTROLPANEL_H
+#pragma once
 
 const char controlPanel[] PROGMEM = R"=====(
 
@@ -54,5 +53,3 @@ const char controlPanel[] PROGMEM = R"=====(
   </body></html>
   
 )=====";
-
-#endif

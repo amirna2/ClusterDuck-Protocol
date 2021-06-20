@@ -1,5 +1,5 @@
-#ifndef INDEX_H
-#define INDEX_H
+#pragma once
+
 const char MAIN_page[] PROGMEM = R"=====(
 <!DOCTYPE html>
 <html>
@@ -155,4 +155,4 @@ const char MAIN_page[] PROGMEM = R"=====(
     </body>
 </html>
 )=====";
-#endif
+

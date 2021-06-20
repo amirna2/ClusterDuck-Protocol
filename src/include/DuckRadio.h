@@ -8,8 +8,7 @@
  * @copyright
  */
 
-#ifndef DUCKLORA_H_
-#define DUCKLORA_H_
+#pragma once
 
 #include "cdpcfg.h"
 
@@ -181,4 +180,3 @@ private:
   int err;
 };
 
-#endif

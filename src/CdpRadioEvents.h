@@ -1,5 +1,5 @@
-#ifndef CDP_RADIO_EVENTS_
-#define CDP_RADIO_EVENTS_
+#pragma once
+
 
 #include "Arduino.h"
 
@@ -42,5 +42,3 @@ typedef struct {
    */
   void (*CadDone)(bool channelActivityDetected);
 } RadioEvents_t;
-
-#endif
