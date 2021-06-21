@@ -237,13 +237,13 @@ int DuckRadio::startTransmitData(byte* data, int length) {
 
     case ERR_TX_TIMEOUT:
       logerr("ERROR startTransmitData timeout!");
-      display->log("tx-tmout");
+      //display->log("tx-tmout");
       err = DUCKLORA_ERR_TIMEOUT;
       break;
 
     default:
       logerr("ERROR startTransmitData failed, err: " + String(tx_err));
-      display->log("tx-fail");
+      //display->log("tx-fail");
       err = DUCKLORA_ERR_TRANSMIT;
       break;
   }
@@ -255,7 +255,7 @@ int DuckRadio::startTransmitData(byte* data, int length) {
     // if a packet is received. See void Duck::onRadioRxTxDone(void)
     rx_err = startReceive();
     if (rx_err != ERR_NONE) {
-      display->log("strt-rx-fail");
+      //display->log("strt-rx-fail");
       err = DUCKLORA_ERR_RECEIVE;
     }
   }
