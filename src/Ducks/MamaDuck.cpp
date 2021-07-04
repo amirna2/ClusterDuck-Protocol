@@ -73,6 +73,14 @@ void MamaDuck::handleReceivedPacket() {
   }
   logdbg("Got data from radio, prepare for relay. size: "+ String(data.size()));
 
+  CdpPacket packet = CdpPacket(data);
+  
+  if (packet.dduid == this->duid) {
+    loginfo("handleReceivedPacket: Got a packet matching out duid. Invoke callback");
+    recvDataCallback(rxPacket->getBuffer());
+    return;
+  }
+
   relay = rxPacket->prepareForRelaying(duid, data);
   if (relay) {
     loginfo("handleReceivedPacket: packet RELAY START");

@@ -86,13 +86,25 @@ public:
       std::vector<byte>().swap(buffer);
     }
 
+    /**
+     * @brief Get the packet topic
+     * @returns a byte representing the packet topic.
+     */
     byte getTopic() { return buffer[TOPIC_POS]; }
 
+    /**
+     * @brief Get the underlying packet data
+     * @returns The complete packet data as a CDP Packet.
+     */
+    CdpPacket getCdpPacket() {
+      CdpPacket packet = CdpPacket(buffer);
+      return packet;
+    }
 
-  private:
-    DuckCrypto duckCrypto; 
-    std::vector<byte> duid;
-    std::vector<byte> buffer;
+    private:
+      DuckCrypto duckCrypto;
+      std::vector<byte> duid;
+      std::vector<byte> buffer;
 };
 
 #pragma once

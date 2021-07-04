@@ -6,7 +6,7 @@ volatile bool Duck::receivedFlag = false;
 Duck::Duck(String name) {
   duckutils::setInterrupt(true);
   duckName = name;
-  loginfo("Running CDP Version: " + String(getCDPVersion().c_str()));
+  //loginfo("Running CDP Version: " + String(getCDPVersion().c_str()));
 }
 
 void Duck::setEncrypt(bool state) {
@@ -230,7 +230,7 @@ int Duck::sendData(byte topic, const String data, const std::vector<byte> target
 int Duck::sendData(byte topic, const std::string data, const std::vector<byte> targetDevice) {
   std::vector<byte> app_data;
   app_data.insert(app_data.end(), data.begin(), data.end());
-  int err = sendData(topic, app_data);
+  int err = sendData(topic, app_data, targetDevice);
   return err;
 }
 
@@ -258,8 +258,11 @@ int Duck::sendData(byte topic, std::vector<byte> data, const std::vector<byte> t
     return err;
   }
   err = duckRadio->sendData(txPacket->getBuffer());
+  if (err == DUCK_ERR_NONE && txDataCallback != NULL) {
+        txDataCallback(txPacket->getCdpPacket());
+  }
   txPacket->reset();
-  return err;
+   return err;
 }
 
 // TODO: implement this using new packet format

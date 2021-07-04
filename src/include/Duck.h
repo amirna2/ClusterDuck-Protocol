@@ -30,6 +30,19 @@ public:
     }
   }
 
+  /// Duck callback functions signature.
+  using rxDoneCallback = void (*)(std::vector<byte> data);
+  using txDoneCallback = void (*)(CdpPacket packet);
+  /**
+   * @brief Register callback for handling data received from duck devices
+   *
+   * The callback will be invoked if the packet needs to be relayed (i.e not
+   * seen before) or if the message is explicitly addressed to the duck.
+   * @param cb a callback to handle data received by the papa duck
+   */
+  void onReceiveDuckData(rxDoneCallback cb) { this->recvDataCallback = cb; }
+  void onTransmitDuckData(txDoneCallback cb) { this->txDataCallback = cb; }
+
   std::string getCDPVersion() { return duckutils::getCDPVersion(); }
 
   /**
@@ -265,6 +278,9 @@ protected:
   DuckPacket* txPacket = NULL;
   DuckPacket* rxPacket = NULL;
 
+  rxDoneCallback recvDataCallback;
+  txDoneCallback txDataCallback;
+  
   DuckCrypto duckCrypto;
 
   /**
@@ -351,5 +367,9 @@ protected:
 
   static bool imAlive(void*);
   static bool reboot(void*);
+  
+private:
+  virtual void handleReceivedPacket() = 0;
+
 };
 

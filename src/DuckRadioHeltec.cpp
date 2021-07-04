@@ -41,9 +41,10 @@ DuckRadio::DuckRadio() {}
 static RadioEvents_t radioEvents;
 
 static void OnLoraTxDone(void) {
-  loginfo("TX done");
-
-  Radio.Sleep();
+  loginfo("TX done. Switch to RX mode");
+  Radio.Rx(0);
+  Radio.IrqProcess();
+  //Radio.Sleep();
   // turnOnRGB(0x002000, 300);
   // turnOnRGB(0x000000, 0);
 }
@@ -84,6 +85,8 @@ int DuckRadio::setupRadio(LoraConfigParams config) {
   boardInitMcu();
   radioEvents.TxDone = OnLoraTxDone;
   radioEvents.TxTimeout = OnLoraTxTimeout;
+  radioEvents.RxDone = OnLoraRxDone;
+  radioEvents.RxTimeout = OnLoraRxTimeout;
   Radio.Init(&radioEvents);
 
   Radio.SetChannel(RF_FREQUENCY);
@@ -91,6 +94,11 @@ int DuckRadio::setupRadio(LoraConfigParams config) {
                     LORA_SPREADING_FACTOR, LORA_CODINGRATE,
                     LORA_PREAMBLE_LENGTH, LORA_FIX_LENGTH_PAYLOAD_ON,
                     LORA_CRC_ON, 0, 0, LORA_IQ_INVERSION_ON, TX_TIMEOUT_VALUE);
+
+  Radio.SetRxConfig(MODEM_LORA, LORA_BANDWIDTH, LORA_SPREADING_FACTOR,
+                    LORA_CODINGRATE, 0, LORA_PREAMBLE_LENGTH,
+                    LORA_SYMBOL_TIMEOUT, LORA_FIX_LENGTH_PAYLOAD_ON, 0, true, 0,
+                    0, LORA_IQ_INVERSION_ON, true);
 
   Radio.SetSyncWord(LORA_MAC_PRIVATE_SYNCWORD);
   Radio.Sleep();
@@ -108,6 +116,7 @@ int DuckRadio::sendData(std::vector<byte> data) {
   // turnOnRGB(0x0000F0, 0);
   loginfo("Sending packet: len: " + String(data.size()));
   Radio.Send(data.data(), data.size());
+  
   return DUCK_ERR_NONE;
 }
 
@@ -117,8 +126,12 @@ int DuckRadio::relayPacket(DuckPacket* packet) {
   return DUCK_ERR_NONE;
 }
 
-int DuckRadio::startReceive() { return DUCK_ERR_NOT_SUPPORTED; }
+int DuckRadio::startReceive() {
+  return DUCK_ERR_NONE;
+}
+
 int DuckRadio::readReceivedData(std::vector<byte>* packetBytes) {
+  loginfo("readReceivedData....");
   return DUCK_ERR_NOT_SUPPORTED;
 }
 

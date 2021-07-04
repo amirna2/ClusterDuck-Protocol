@@ -42,8 +42,35 @@ int DuckLink::setupWithDefaults(std::vector<byte> deviceId, String ssid,
   return DUCK_ERR_NONE;
 }
 
+void DuckLink::handleReceivedPacket() {
+    loginfo("handleReceivedPacket()...");
+
+    std::vector<byte> data;
+    int err = duckRadio->readReceivedData(&data);
+
+    if (err != DUCK_ERR_NONE) {
+      logerr("ERROR Failed to get data from DuckRadio. rc = " + String(err));
+      return;
+    }
+    CdpPacket packet = CdpPacket(data);
+    if (packet.dduid == this->duid) {
+      loginfo("Got a packet. Invoke callback");
+      recvDataCallback(data);
+    }
+}
+
 void DuckLink::run() {
   duckRadio->processRadioIrq();
   handleOtaUpdate();
+  if (getReceiveFlag()) {
+    duckutils::setInterrupt(false);
+    setReceiveFlag(false);
+
+    handleReceivedPacket();
+    rxPacket->reset();
+
+    duckutils::setInterrupt(true);
+    startReceive();
+  }
   processPortalRequest();
 }

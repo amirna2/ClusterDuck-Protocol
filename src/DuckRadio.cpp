@@ -120,19 +120,18 @@ int DuckRadio::readReceivedData(std::vector<byte>* packetBytes) {
     return DUCKLORA_ERR_HANDLE_PACKET;
   }
 
-  loginfo("readReceivedData() - packet length returns: " +
-          String(packet_length));
+  logdbg("readReceivedData() - packet length returns: " + String(packet_length));
 
   packetBytes->resize(packet_length);
   err = lora.readData(packetBytes->data(), packet_length);
-  loginfo("readReceivedData() - lora.readData returns: " + String(err));
+  logdbg("readReceivedData() - lora.readData returns: " + String(err));
 
   if (err != ERR_NONE) {
     logerr("ERROR  readReceivedData failed. err: " + String(err));
     return DUCKLORA_ERR_HANDLE_PACKET;
   }
 
-  loginfo("readReceivedData: checking path offset integrity");
+  logdbg("readReceivedData: checking path offset integrity");
 
   // Do some sanity checks on the received packet here before we continue
   // further RadioLib v4.0.5 has a bug where corrupt packets are still returned
@@ -146,7 +145,7 @@ int DuckRadio::readReceivedData(std::vector<byte>* packetBytes) {
     return DUCKLORA_ERR_HANDLE_PACKET;
   }
 
-  loginfo("readReceivedData: checking data section CRC");
+  logdbg("readReceivedData: checking data section CRC");
 
   std::vector<byte> data_section;
   data_section.insert(data_section.end(), &data[DATA_POS], &data[path_pos]);

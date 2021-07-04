@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <Arduino.h>
 #include <WString.h>
 
@@ -49,5 +48,5 @@ public:
   bool getDetectState();
 
 private :
-  void handleReceivedPacket();
+  virtual void handleReceivedPacket();
 };

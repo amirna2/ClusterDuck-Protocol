@@ -136,21 +136,26 @@ int DuckNet::setupWebServer(bool createCaptivePortal, String html) {
     data.insert(data.end(), val.begin(), val.end());
     //TODO: send the correct ducktype
     txPacket->prepareForSending(ZERO_DUID, DuckType::UNKNOWN, topics::status, data );
+    CdpPacket packet = txPacket->getCdpPacket();
     err = duckRadio->sendData(txPacket->getBuffer());
 
     switch (err) {
-      case DUCK_ERR_NONE:
-      request->send(200, "text/html", portal);
+      case DUCK_ERR_NONE: {
+        // request->send(200, "text/html", portal);
+        // TODO: Return something reasonably user-friendly
+        auto muid = packet.muid
+        request->send(200, "text/html", "<h2> message sent: " + duckutils::toString(muid) + "</h2>");
+      }                
       break;
       case DUCKLORA_ERR_MSG_TOO_LARGE:
-      request->send(413, "text/html", "Message payload too big!");
-      break;
+        request->send(413, "text/html", "Message payload too big!");
+        break;
       case DUCKLORA_ERR_HANDLE_PACKET:
-      request->send(400, "text/html", "BadRequest");
-      break;
+        request->send(400, "text/html", "BadRequest");
+        break;
       default:
-      request->send(500, "text/html", "Oops! Unknown error.");
-      break;
+        request->send(500, "text/html", "Oops! Unknown error.");
+        break;
     }
   });
 
@@ -310,9 +315,9 @@ int DuckNet::saveWifiCredentials(String ssid, String password) {
   if (esid.length() == 0 || epass.length() == 0){
    loginfo("ERROR setupInternet: Stored SSID and PASSWORD empty");
    return DUCK_ERR_SETUP;
- } else{
-  loginfo("Setup Internet with saved credentials");
-  setupInternet(esid, epass);
+  } else {
+    loginfo("Setup Internet with saved credentials");
+    setupInternet(esid, epass);
   
 }
 

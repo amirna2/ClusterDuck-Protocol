@@ -41,6 +41,9 @@ public:
    * @returns the duck type defined as DuckType
    */
   int getType() { return DuckType::LINK; }
+
+private:
+  virtual void handleReceivedPacket();
 };
 
 
