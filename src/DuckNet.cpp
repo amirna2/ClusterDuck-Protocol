@@ -143,7 +143,7 @@ int DuckNet::setupWebServer(bool createCaptivePortal, String html) {
       case DUCK_ERR_NONE: {
         // request->send(200, "text/html", portal);
         // TODO: Return something reasonably user-friendly
-        auto muid = packet.muid
+        auto muid = packet.muid;
         request->send(200, "text/html", "<h2> message sent: " + duckutils::toString(muid) + "</h2>");
       }                
       break;

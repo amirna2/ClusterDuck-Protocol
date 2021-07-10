@@ -18,8 +18,8 @@
 #define RF_FREQUENCY CDPCFG_RF_LORA_FREQ_HZ
 
 #define TX_OUTPUT_POWER CDPCFG_RF_LORA_TXPOW
-#define RX_TIMEOUT_VALUE 1000
-#define TX_TIMEOUT_VALUE 3000
+#define RX_TIMEOUT_VALUE 3000
+#define TX_TIMEOUT_VALUE 1000
 // [0: 125 kHz, 1: 250 kHz, 2: 500 kHz, 3: Reserved]
 #define LORA_BANDWIDTH 0
 
@@ -38,22 +38,19 @@ DuckRadio* DuckRadio::instance = NULL;
 
 DuckRadio::DuckRadio() {}
 
+volatile bool DuckRadio::receivedFlag = false;
 static RadioEvents_t radioEvents;
 
 static void OnLoraTxDone(void) {
   loginfo("TX done. Switch to RX mode");
-  Radio.Rx(0);
+  Radio.Rx(3000);
   Radio.IrqProcess();
-  //Radio.Sleep();
-  // turnOnRGB(0x002000, 300);
-  // turnOnRGB(0x000000, 0);
+  // Not sleeping here because we want to listen for incoming packets
 }
 
 static void OnLoraTxTimeout(void) {
   loginfo("TX timeout");
   Radio.Sleep();
-  // turnOnRGB(0x3000000,300);
-  // turnOnRGB(0x000000, 0);
 }
 
 static void OnLoraRxDone(uint8_t* payload, uint16_t size, int16_t rssi,
@@ -62,9 +59,15 @@ static void OnLoraRxDone(uint8_t* payload, uint16_t size, int16_t rssi,
   Radio.Sleep();
   logdbg("Received Hex:");
   for (int i = 0; i < size; i++) {
-    logdbg(*payload++, HEX);
+    Serial.print(*payload++, HEX);
   }
+  Serial.println();
   logdbg_f("\nRSSI:%d, SNR:%d, Size:%d\r\n", rssi, snr, size);
+  DuckRadio::setLastRxPacket(payload, size);
+  if (duckutils::isInterruptEnabled()) {
+    DuckRadio::setReceiveFlag(true);
+  }
+  Radio.Sleep();
 }
 
 static void OnLoraRxTimeout(void) {
@@ -95,10 +98,10 @@ int DuckRadio::setupRadio(LoraConfigParams config) {
                     LORA_PREAMBLE_LENGTH, LORA_FIX_LENGTH_PAYLOAD_ON,
                     LORA_CRC_ON, 0, 0, LORA_IQ_INVERSION_ON, TX_TIMEOUT_VALUE);
 
-  Radio.SetRxConfig(MODEM_LORA, LORA_BANDWIDTH, LORA_SPREADING_FACTOR,
-                    LORA_CODINGRATE, 0, LORA_PREAMBLE_LENGTH,
-                    LORA_SYMBOL_TIMEOUT, LORA_FIX_LENGTH_PAYLOAD_ON, 0, true, 0,
-                    0, LORA_IQ_INVERSION_ON, true);
+  Radio.SetRxConfig(
+      MODEM_LORA, LORA_BANDWIDTH, LORA_SPREADING_FACTOR, LORA_CODINGRATE, 0,
+      LORA_PREAMBLE_LENGTH, LORA_SYMBOL_TIMEOUT, LORA_FIX_LENGTH_PAYLOAD_ON,
+      0,LORA_CRC_ON, 0, 0, LORA_IQ_INVERSION_ON,true);
 
   Radio.SetSyncWord(LORA_MAC_PRIVATE_SYNCWORD);
   Radio.Sleep();
@@ -106,17 +109,14 @@ int DuckRadio::setupRadio(LoraConfigParams config) {
 }
 
 int DuckRadio::sendData(byte* data, int length) {
-  // turnOnRGB(0, 300);
   loginfo("Sending packet: len: " + String(length));
   Radio.Send(data, length);
   return DUCK_ERR_NONE;
 }
 
 int DuckRadio::sendData(std::vector<byte> data) {
-  // turnOnRGB(0x0000F0, 0);
   loginfo("Sending packet: len: " + String(data.size()));
   Radio.Send(data.data(), data.size());
-  
   return DUCK_ERR_NONE;
 }
 

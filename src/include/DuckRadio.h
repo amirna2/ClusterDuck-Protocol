@@ -167,14 +167,23 @@ public:
    */
   void processRadioIrq();
 
-private:
-  DuckRadio();
+  static volatile bool receivedFlag;
+  static void setReceiveFlag(bool value) { receivedFlag = value; }
+  static bool getReceiveFlag() { return receivedFlag; }
+  const static std::vector<byte> getLastRxPacket() { return lastRxPacket; } 
+  static void setLastRxPacket(uint8_t* data, uint16_t size) {
+    std::vector<byte>().swap(lastRxPacket);
+    lastRxPacket.assign(&data[0], &data[size]);
+  }
+  private : DuckRadio();
   DuckRadio(DuckRadio const&) = delete;
   DuckRadio& operator=(DuckRadio const&) = delete;
   static DuckRadio* instance;
 
+  static std::vector<byte> lastRxPacket;
+
 #ifdef DISPLAY_AVAILABLE
-  DuckDisplay* display = DuckDisplay::getInstance();
+      DuckDisplay* display = DuckDisplay::getInstance();
 #endif  
 
   int err;

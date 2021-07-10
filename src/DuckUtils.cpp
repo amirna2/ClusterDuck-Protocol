@@ -30,32 +30,6 @@ bool flipDetectState() {
 
 }
 
-/**
- * @brief Compare two vectors with regard to both size and contents.
- *
- * @param a The first vector
- * @param b The second vector
- * @returns True if a and b have the same size and contents, false if not.
- */
-template <typename T>
-bool isEqual(const std::vector<T>& a, const std::vector<T>& b) {
-  if (a.size() != b.size()) {
-    return false;
-  }
-  return std::equal(a.begin(), a.end(), b.begin());
-}
-
-/**
- * @brief Convert a vector into an ASCII string.
- *
- * @param vec A vector to convert
- * @returns A String representing the byte array in ASCII.
- *
- */
-template <typename T> String toString(const std::vector<T>& vec) {
-  return std::string(vec.begin(), vec.end()).c_str();
-}
-
 void getRandomBytes(int length, byte* bytes) {
   const char* digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   int i;
@@ -69,7 +43,6 @@ void getRandomBytes(int length, byte* bytes) {
 #endif    
     bytes[i] = digits[pos];
   }
-  
 }
 
 String createUuid(int length) {
