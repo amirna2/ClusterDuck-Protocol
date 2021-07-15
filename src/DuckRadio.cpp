@@ -2,6 +2,7 @@
 #include "MemoryFree.h"
 #if !defined(CDPCFG_HELTEC_CUBE_CELL)
 #include "include/DuckUtils.h"
+#include <CRC32.h>
 #include <RadioLib.h>
 
 #ifdef CDPCFG_PIN_LORA_SPI_SCK
@@ -158,8 +159,7 @@ int DuckRadio::readReceivedData(std::vector<byte>* packetBytes) {
   std::vector<byte> data_section;
   data_section.insert(data_section.end(), &data[DATA_POS], &data[path_pos]);
   uint32_t packet_data_crc = duckutils::toUnit32(&data[DATA_CRC_POS]);
-  uint32_t computed_data_crc =
-      CRC32::calculate(data_section.data(), data_section.size());
+  uint32_t computed_data_crc = CRC32::calculate(data_section.data(), data_section.size());
 
   if (computed_data_crc != packet_data_crc) {
     logerr("ERROR data crc mismatch: received: " + String(packet_data_crc) +
