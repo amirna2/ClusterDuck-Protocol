@@ -4,7 +4,6 @@
 #include "include/DuckUtils.h"
 #include <RadioLib.h>
 
-/*
 #ifdef CDPCFG_PIN_LORA_SPI_SCK
 #include "SPI.h"
 SPIClass _spi;
@@ -16,9 +15,7 @@ CDPCFG_LORA_CLASS lora =
 CDPCFG_LORA_CLASS lora = new Module(CDPCFG_PIN_LORA_CS, CDPCFG_PIN_LORA_DIO0,
                                     CDPCFG_PIN_LORA_RST, CDPCFG_PIN_LORA_DIO1);
 #endif
-*/
 
-CDPCFG_LORA_CLASS lora;
 
 DuckRadio* DuckRadio::instance = NULL;
 
@@ -37,9 +34,7 @@ int DuckRadio::setupRadio(LoraConfigParams config) {
   lora = new Module(config.ss, config.di0, config.rst, config.di1, _spi,
                     _spiSettings);
 #else
-  SX1262 radio = new Module(10, 2, 3, 9);
   lora = new Module(config.ss, config.di0, config.rst, config.di1);
-  
 #endif
 
   // TODO: Display should be setup outside the radio setup
