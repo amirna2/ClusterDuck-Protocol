@@ -4,6 +4,7 @@
 #include "include/DuckUtils.h"
 #include <RadioLib.h>
 
+/*
 #ifdef CDPCFG_PIN_LORA_SPI_SCK
 #include "SPI.h"
 SPIClass _spi;
@@ -15,6 +16,9 @@ CDPCFG_LORA_CLASS lora =
 CDPCFG_LORA_CLASS lora = new Module(CDPCFG_PIN_LORA_CS, CDPCFG_PIN_LORA_DIO0,
                                     CDPCFG_PIN_LORA_RST, CDPCFG_PIN_LORA_DIO1);
 #endif
+*/
+
+CDPCFG_LORA_CLASS lora;
 
 DuckRadio* DuckRadio::instance = NULL;
 
@@ -33,7 +37,9 @@ int DuckRadio::setupRadio(LoraConfigParams config) {
   lora = new Module(config.ss, config.di0, config.rst, config.di1, _spi,
                     _spiSettings);
 #else
+  SX1262 radio = new Module(10, 2, 3, 9);
   lora = new Module(config.ss, config.di0, config.rst, config.di1);
+  
 #endif
 
   // TODO: Display should be setup outside the radio setup
@@ -73,14 +79,21 @@ int DuckRadio::setupRadio(LoraConfigParams config) {
     return DUCKLORA_ERR_SETUP;
   }
 
+#if !defined(CDPCFG_SX126X) //setGain() is only availble on SX127X radios
   rc = lora.setGain(CDPCFG_RF_LORA_GAIN);
   if (rc == ERR_INVALID_GAIN) {
     logerr("ERROR  gain is invalid");
     return DUCKLORA_ERR_SETUP;
   }
+#endif
 
+#if defined(CDPCFG_SX126X)
   // set the interrupt handler to execute when packet tx or rx is done.
+  lora.setDio1Action(config.func);
+#else
   lora.setDio0Action(config.func);
+#endif
+
 
   // set sync word to private network
   err = lora.setSyncWord(0x12);
@@ -159,10 +172,16 @@ int DuckRadio::readReceivedData(std::vector<byte>* packetBytes) {
     return DUCKLORA_ERR_HANDLE_PACKET;
   }
   // we have a good packet
+#if defined(CDPCFG_SX126X)
+  loginfo("RX: rssi: " + String(lora.getRSSI()) +
+          " snr: " + String(lora.getSNR()) +
+          " size: " + String(packet_length));
+#else
   loginfo("RX: rssi: " + String(lora.getRSSI()) +
           " snr: " + String(lora.getSNR()) +
           " fe: " + String(lora.getFrequencyError(true)) +
           " size: " + String(packet_length));
+#endif
 
   return err;
 }

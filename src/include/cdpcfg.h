@@ -167,61 +167,6 @@
 #define CDPCFG_PIN_LORA_DIO1 -1
 
 /*
- * BOARD "Heltec Cube Cell Board ASR6501 with SX1262"
- * https://heltec.org/project/htcc-ab01/
- * pio: board = cubecell_board
- */
-#elif defined(CubeCell_Board)
-
-#define CDPCFG_HELTEC_CUBE_CELL
-
-// TODO: These are not used by the Heltec LoRa library
-// But they still need to be defined for now because the Duck::setupRadio() uses them.
-// Update the setupRadio to use a RadioConfig data structure instead so we don't need to expose these to the apps
-#define CDPCFG_PIN_LORA_CS 10
-#define CDPCFG_PIN_LORA_DIO0 9 // BUSY PIN
-#define CDPCFG_PIN_LORA_DIO1 8
-#define CDPCFG_PIN_LORA_DIO2 -1
-#define CDPCFG_PIN_LORA_RST 14
-
-// Oled Display settings
-#define CDPCFG_OLED_NONE
-
-// Wifi module
-#define CDPCFG_WIFI_NONE
-//===== BOARD "Heltec Cube Cell Board ASR6501 with SX1262" =====
-
-#elif defined(CubeCell_GPS)
-
-#define CDPCFG_HELTEC_CUBE_CELL
-
-// Uncomment this to enable the OLED display
-//#define ENABLE_DISPLAY
-
-// TODO: These are not used by the Heltec LoRa library
-// But they still need to be defined for now because the Duck::setupRadio() uses
-// them. Update the setupRadio to use a RadioConfig data structure instead so we
-// don't need to expose these to the apps
-#define CDPCFG_PIN_LORA_CS 10
-#define CDPCFG_PIN_LORA_DIO0 9 // BUSY PIN
-#define CDPCFG_PIN_LORA_DIO1 8
-#define CDPCFG_PIN_LORA_DIO2 -1
-#define CDPCFG_PIN_LORA_RST 14
-
-// Oled Display settings
-#ifdef ENABLE_DISPLAY
-#define CDPCFG_PIN_OLED_CLOCK 15
-#define CDPCFG_PIN_OLED_DATA 4
-#define CDPCFG_PIN_OLED_RESET 16
-#else
-#define CDPCFG_OLED_NONE
-#endif
-
-// Wifi module
-#define CDPCFG_WIFI_NONE
-//===== BOARD "Heltec Cube Cell Board ASR6502+GPS+DISPLAY with SX1262" =====
-
-/*
  * BOARD "rocket scream Mini Ultra Pro v3"
  * https://www.rocketscream.com/blog/docs-item/mini-ultra-pro-hookup-guide/
  * pio: board = arduino_zero
@@ -246,6 +191,35 @@
 // Required for Serial on Zero based boards
 #define Serial SERIAL_PORT_USBVIRTUAL
 //===== BOARD "rocket scream Mini Ultra Pro v3" =====
+
+#elif defined(ARDUINO_LoRa_THING_PLUS_expLoRaBLE)
+
+#define CDPCFG_LORA_CLASS SX1262
+
+// SX1262 has the following connections:
+#define CDPCFG_PIN_LORA_CS 10    // NSS
+#define CDPCFG_PIN_LORA_DIO1 2   // DIO1
+#define CDPCFG_PIN_LORA_RST 3    // NRST
+#define CDPCFG_PIN_LORA_DIO0 9   // BUSY PIN (there is no DI0 on SX126X, but we use the DIO define as a place holder for the BUSY PIN)
+#define CDPCFG_PIN_LORA_DIO2 -1  // UNUSED
+
+// SX1262 Sync Word is a 2 bytes value. SX127x were using a single byte
+// Private Sync word 0x12 now becomes 0x1424 using the formula below:
+// byte 1: syncWord & 0xF0 | ((controlBits & 0xF0) >> 4) -> 0x14
+// byte 2 ((syncWord & 0x0F) << 4) | (controlBits & 0x0F) -> 0x24
+
+#define CDPCFG_LORA_PRIVATE_SYNCWORD 0x12
+#define CDPCFG_LORA_SYNCWORD_CONTROL_BITS 0x44
+
+// This device uses SEMTEC LORA SX126X radio
+#define CDPCFG_SX126X
+
+// Oled Display settings
+#define CDPCFG_OLED_NONE
+
+// Wifi module
+#define CDPCFG_WIFI_NONE
+//===== BOARD "Sparkfun Artemis LoRa Things Plus: ExploRaBLE" =====
 
 /*
  * BOARD "sparkfun lora gateway 1-channel"
@@ -406,7 +380,7 @@
 #define CDPCFG_PIN_RGBLED_B 2
 
 /// Default LoRa Module supported chipset when using the RadioLib library
-#if !defined(CDPCFG_LORA_CLASS) && !defined(CDPCFG_HELTEC_CUBE_CELL)
+#if !defined(CDPCFG_LORA_CLASS)
 #define CDPCFG_LORA_CLASS SX1276
 #endif
 
