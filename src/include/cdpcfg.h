@@ -31,11 +31,9 @@
 #ifndef CDPCFG
 #define CDPCFG
 
-
-
 #include "boards/ttgo_lora32_v1.h"
 #include "boards/ttgo_lora32_v2.h"
-#include "boards/t_beam.h"
+#include "boards/ttgo_tbeam.h"
 #include "boards/heltec_wireless_stick.h"
 #include "boards/heltec_wireless_stick_lite.h"
 #include "boards/heltec_cubecell.h"
@@ -44,12 +42,7 @@
 #include "boards/sparkfun_lgw1c.h"
 #include "boards/pycon_lopy.h"
 
-
-
-#warning "===============> USING SX1262 <==================="
-
-
-#if !defined(CDPCFG_BOARD)
+#if !defined (CDPCFG_BOARD)
 #warning "NO BOARD DEFINED, DEFAULTING TO ARDUINO_HELTEC_WIFI_LORA_32_V2"
 #define CDPCFG_BOARD ARDUINO_HELTEC_WIFI_LORA_32_V2
 #include "boards/heltec_wifi_lora_v2.h"

@@ -1,6 +1,8 @@
 #include "include/DuckRadio.h"
 #include "MemoryFree.h"
+
 #if !defined(CDPCFG_HELTEC_CUBE_CELL)
+
 #include "include/DuckUtils.h"
 #include <RadioLib.h>
 
@@ -13,13 +15,13 @@ CDPCFG_LORA_CLASS lora =
                CDPCFG_PIN_LORA_DIO1, _spi, _spiSettings);
 #else
 
-#if defined(CDPCFG_RADIO_SX126X)
+#ifdef CDPCFG_RADIO_SX126X
 CDPCFG_LORA_CLASS radio = new Module(CDPCFG_PIN_LORA_CS, CDPCFG_PIN_LORA_DIO1, CDPCFG_PIN_LORA_RST, RADIO_BUSY_PIN);
 #else
 CDPCFG_LORA_CLASS lora = new Module(CDPCFG_PIN_LORA_CS, CDPCFG_PIN_LORA_DIO0,
                                     CDPCFG_PIN_LORA_RST, CDPCFG_PIN_LORA_DIO1);
-
-#endif
+#endif //CDPCFG_RADIO_SX126X
+#endif //CDPCFG_PIN_LORA_SPI_SCK
 
 DuckRadio* DuckRadio::instance = NULL;
 
@@ -265,4 +267,4 @@ int DuckRadio::startTransmitData(byte* data, int length) {
   }
   return err;
 }
-#endif
+#endif //CDPCFG_HELTEC_CUBE_CELL

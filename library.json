@@ -34,7 +34,8 @@
         "arduino-timer": "~2.0.1",
         "ESP Async WebServer": "~1.2.3",
         "RadioLib": "~3.5.0",
-
+        "Crypto": "~0.2.0",
+        "CRC32": "~2.0.0"
     }
  
 }
