@@ -11,6 +11,8 @@
 #define CDPCFG_RADIO_SX126X
 
 #if defined(CDPCFG_RADIO_SX126X)
+#warning "===============> USING SX1262 <==================="
+
   // Board is available here: https://pt.aliexpress.com/item/4001287221970.html
 #define GPS_RX_PIN                  34
 #define GPS_TX_PIN                  12

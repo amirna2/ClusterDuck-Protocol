@@ -31,6 +31,8 @@
 #ifndef CDPCFG
 #define CDPCFG
 
+
+
 #include "boards/ttgo_lora32_v1.h"
 #include "boards/ttgo_lora32_v2.h"
 #include "boards/t_beam.h"
@@ -41,6 +43,10 @@
 #include "boards/rocketscream_mini_ultra_pro_v3.h"
 #include "boards/sparkfun_lgw1c.h"
 #include "boards/pycon_lopy.h"
+
+
+
+#warning "===============> USING SX1262 <==================="
 
 
 #if !defined(CDPCFG_BOARD)
