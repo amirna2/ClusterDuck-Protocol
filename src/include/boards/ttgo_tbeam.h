@@ -3,15 +3,13 @@
 // T-Beam -> LilyGO LoRa Series boards
 // https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series
 
-#warning "====> In ttgo_tbeam.h"
-
 #if defined(ARDUINO_TBeam)
 #define CDPCFG_BOARD ARDUINO_TBeam
 
 //Uncomment this if you are using the T-Beam LoRa SX1262
 #define CDPCFG_RADIO_SX126X
 
-#if defined(CDPCFG_RADIO_SX126X)
+#if defined (CDPCFG_RADIO_SX126X)
 
   // Board is available here: https://pt.aliexpress.com/item/4001287221970.html
 #define GPS_RX_PIN                  34
