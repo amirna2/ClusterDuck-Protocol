@@ -106,7 +106,6 @@
 
 #ifndef CDPCFG_OLED_CLASS
 #if defined(CDPCFG_OLED_NONE)
-// do nothing
 #elif defined(CDPCFG_OLED_64x32)
 // smaller displays
 #define CDPCFG_OLED_CLASS U8G2_SSD1306_64X32_NONAME_F_SW_I2C
